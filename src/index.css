@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0a2a4f;
+  --color-accent: #135591;
+  --color-accent-soft: #e8f1fa;
+  --color-teal: #0b8f87;
+  --color-amber: #d98a12;
+  --color-warning: #a16207;
+  --color-danger: #c62828;
+  --color-gold: #c8a45c;
+  --color-canvas: #f4f8fc;
+  --color-card: #ffffff;
+  --color-line: #dbe7f3;
+  --color-muted: #eef4fa;
+  --color-ink: #1b2a3a;
+  --color-ink-muted: #5b6b7d;
+
+  --font-sans:
+    "Noto Sans SC", "HarmonyOS Sans SC", "Source Han Sans SC", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    "Helvetica Neue", Arial, sans-serif;
+  --font-display:
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+:root {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--color-canvas);
+  height: 100%;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* 页面切换时的轻量淡入；尊重减少动效偏好 */
+@media (prefers-reduced-motion: no-preference) {
+  .page-enter {
+    animation: page-enter 180ms ease-out both;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 数字/ID 使用等宽，便于对齐与核对 */
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.92em;
+}
+
+/* antd 表格内的紧凑排版 */
+.ant-table-tbody > tr > td {
+  vertical-align: middle;
+}
+
+/* 表格操作列保持单行 */
+.table-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* 更轻的滚动条：更细，并隐藏两端三角按钮。
+   注意：不要在 Chromium 里给滚动容器设置 scrollbar-width / scrollbar-color，
+   否则浏览器会改用原生滚动条并忽略 ::-webkit-scrollbar 规则，箭头就会重新出现。 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* 隐藏滚动条两端的三角按钮（覆盖所有方向与单/双按钮变体） */
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:single-button,
+::-webkit-scrollbar-button:double-button,
+::-webkit-scrollbar-button:vertical:start:decrement,
+::-webkit-scrollbar-button:vertical:end:increment,
+::-webkit-scrollbar-button:horizontal:start:decrement,
+::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c7d7ea;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9db4cd;
+}
+
+/* 横竖滚动条交汇处的小方块也隐藏 */
+::-webkit-scrollbar-corner {
+  display: none !important;
+  background: transparent !important;
+}
+
+/* antd 6 会给表格设置 scrollbar-color，Chromium 一旦看到这个标准属性
+   就会改用原生滚动条并忽略 ::-webkit-scrollbar，箭头因此无法隐藏。
+   这里把表格滚动容器的标准属性恢复为 auto，让下面的 WebKit 规则生效。 */
+.ant-table-content,
+.ant-table-body {
+  scrollbar-color: auto !important;
+}
+
+/* 表格内部滚动条保留，但隐藏两端的按钮与交汇角标 */
+.ant-table-content::-webkit-scrollbar-button,
+.ant-table-body::-webkit-scrollbar-button,
+.ant-table-content::-webkit-scrollbar-corner,
+.ant-table-body::-webkit-scrollbar-corner {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Firefox 没有 ::-webkit-scrollbar，单独给它一个细滚动条 */
+@supports (-moz-appearance: none) {
+  .ant-table-content,
+  .ant-table-body {
+    scrollbar-width: thin;
+    scrollbar-color: #c7d7ea transparent;
+  }
+}
+
+/* 页面纵向滚动条与左侧菜单滚动条不显示；表格内部滚动条不受影响 */
+html,
+body,
+.sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.sidebar-scroll::-webkit-scrollbar,
+.sidebar-scroll .ant-drawer-body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.sidebar-scroll .ant-drawer-body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 文本域右下角的缩放角标一并去掉 */
+textarea {
+  resize: none;
+}
+
+::selection {
+  background: #dce9f7;
+  color: #0a2a4f;
+}
